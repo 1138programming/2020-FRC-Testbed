@@ -10,7 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoysticks;
+import frc.robot.commands.FalconStop;
 import frc.robot.subsystems.Base;
+import frc.robot.subsystems.Falcon;
 import frc.robot.Robot;
 import frc.robot.commands.TestCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -39,6 +41,7 @@ public class RobotContainer {
   // number it is.
   //Create Robot
   public static Base base = new Base();
+  public static Falcon falcon = new Falcon(); 
   //Controller Constants 
   public static final int KLogitechDrive = 0;
   public static final int KXboxArms = 1;
@@ -76,15 +79,13 @@ public class RobotContainer {
 	public JoystickButton btnA, btnB, btnX, btnY, btnLB, btnRB, btnStrt, btnLT, btnRT; // Xbox Buttons
 
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
-
     //Default Commands?
     /*base.setDefaultCommand(new RunCommand(() -> {
       SmartDashboard.putBoolean("");
       return;
     }));*/
     base.setDefaultCommand(new DriveWithJoysticks());
+    falcon.setDefaultCommand(new FalconStop());
     //Controllers 
     logitech = new Joystick(KLogitechDrive);
     xbox = new Joystick(KXboxArms);
@@ -112,6 +113,9 @@ public class RobotContainer {
     
     //Button Assigned Commands 
     // EX: btnLT.whenPressed(new ArmUp());
+
+    // Configure the button bindings
+    configureButtonBindings();
   }
   /*
   public double getRightAxis() {
@@ -159,6 +163,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
+    btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
   }
 
 
