@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoysticks;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Base;
 import frc.robot.Robot;
 import frc.robot.commands.TestCommand;
@@ -39,6 +40,7 @@ public class RobotContainer {
   // number it is.
   //Create Robot
   public static Base base = new Base();
+  public static Vision vision = new Vision(); 
   //Controller Constants 
   public static final int KLogitechDrive = 0;
   public static final int KXboxArms = 1;
