@@ -16,29 +16,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Neo extends SubsystemBase {
 
-    public static final int KSparkMax1 = 10; 
-	public static final int KSparkMax2 = 2; 
+    public static final int TopSparkMax = 10;
+	  public static final int BottomSparkMax = 11;
 
-    private CANSparkMax NeoMotor1; 
-	private CANSparkMax NeoMotor2; 
+    private CANSparkMax TopMotor; 
+	  private CANSparkMax BottomMotor; 
 
     public Neo () {
-		NeoMotor1 = new CANSparkMax(KSparkMax1, CANSparkMaxLowLevel.MotorType.kBrushless);
-		NeoMotor2 = new CANSparkMax(KSparkMax2, MotorType.kBrushless);
-        NeoMotor2.setInverted(true);
-        NeoMotor2.follow(NeoMotor1);
+		  TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+		  BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+      BottomMotor.setInverted(true);
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
+
+    
   }
 
-  public void neoMotorMove(double speed) {
-		NeoMotor1.set(speed);
-	}
+  /*public void neoMotorMove(double speed) {
+    NeoMotor1.set(speed);
+    NeoMotor2.set(speed);
+	}*/
 
-  public void neoMotorStop() {
-		NeoMotor1.set(0);
-	}
+  /*public void neoMotorStop() {
+    NeoMotor1.set(0);
+    NeoMotor2.set(0);
+  }*/
+  
+  public void move(double topSpeed, double bottomSpeed) {
+    TopMotor.set(topSpeed);
+    BottomMotor.set(bottomSpeed);
+  }
 }

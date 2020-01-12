@@ -26,7 +26,7 @@ public class NeoStop extends CommandBase {
    */
   public NeoStop() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.falcon);
+    addRequirements(RobotContainer.neo);
   }
 
   // Called when the command is initially scheduled.
@@ -37,7 +37,7 @@ public class NeoStop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.neo.neoMotorStop();
+    RobotContainer.neo.move(0, 0);
   }
 
   // Called once the command ends or is interrupted.
