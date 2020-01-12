@@ -17,12 +17,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Falcon extends SubsystemBase {
 
-  public static final int KFalcon = 0;
+  public static final int KFalcon1 = 0;
+  public static final int KFalcon2 = 1;
+  public static final int KFalcon3 = 2;
+  public static final int KFalcon4 = 3;
+  public static final int KFalcon5 = 4;
+  public static final int KFalcon6 = 5;
 
-  private TalonSRX Falcon;
+  private TalonSRX Falcon1;
+  private TalonSRX Falcon2;
+  private TalonSRX Falcon3;
+  private TalonSRX Falcon4;
+  private TalonSRX Falcon5;
+  private TalonSRX Falcon6;
+
 
   public Falcon() {
-    Falcon = new TalonSRX(KFalcon);
+    Falcon1 = new TalonSRX(KFalcon1);
+    Falcon2 = new TalonSRX(KFalcon2);
+    Falcon3 = new TalonSRX(KFalcon3);
+    Falcon4 = new TalonSRX(KFalcon4);
+    Falcon5 = new TalonSRX(KFalcon5);
+    Falcon6 = new TalonSRX(KFalcon6);
+    
   }
 
   @Override
@@ -31,6 +48,11 @@ public class Falcon extends SubsystemBase {
   }
 
   public void move(double speed) {
-    Falcon.set(ControlMode.PercentOutput, speed);
+    Falcon1.set(ControlMode.PercentOutput, speed);
+    Falcon2.set(ControlMode.PercentOutput, speed);
+    Falcon3.set(ControlMode.PercentOutput, speed);
+    Falcon4.set(ControlMode.PercentOutput, speed);
+    Falcon5.set(ControlMode.PercentOutput, speed);
+    Falcon6.set(ControlMode.PercentOutput, speed);
   }
 }
