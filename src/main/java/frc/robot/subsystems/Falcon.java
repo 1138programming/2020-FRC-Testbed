@@ -24,21 +24,21 @@ public class Falcon extends SubsystemBase {
   public static final int KFalcon5 = 4;
   public static final int KFalcon6 = 5;
 
+  private TalonSRX Falcon0;
   private TalonSRX Falcon1;
   private TalonSRX Falcon2;
   private TalonSRX Falcon3;
   private TalonSRX Falcon4;
   private TalonSRX Falcon5;
-  private TalonSRX Falcon6;
 
 
   public Falcon() {
-    Falcon1 = new TalonSRX(KFalcon1);
-    Falcon2 = new TalonSRX(KFalcon2);
-    Falcon3 = new TalonSRX(KFalcon3);
-    Falcon4 = new TalonSRX(KFalcon4);
-    Falcon5 = new TalonSRX(KFalcon5);
-    Falcon6 = new TalonSRX(KFalcon6);
+    Falcon0 = new TalonSRX(KFalcon1);
+    Falcon1 = new TalonSRX(KFalcon2);
+    Falcon2 = new TalonSRX(KFalcon3);
+    Falcon3 = new TalonSRX(KFalcon4);
+    Falcon4 = new TalonSRX(KFalcon5);
+    Falcon5 = new TalonSRX(KFalcon6);
     
   }
 
@@ -48,11 +48,11 @@ public class Falcon extends SubsystemBase {
   }
 
   public void move(double speed) {
+    Falcon0.set(ControlMode.PercentOutput, speed);
     Falcon1.set(ControlMode.PercentOutput, speed);
     Falcon2.set(ControlMode.PercentOutput, speed);
     Falcon3.set(ControlMode.PercentOutput, speed);
     Falcon4.set(ControlMode.PercentOutput, speed);
     Falcon5.set(ControlMode.PercentOutput, speed);
-    Falcon6.set(ControlMode.PercentOutput, speed);
   }
 }
