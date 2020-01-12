@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.NeoWithJoysticks; 
 import frc.robot.commands.FalconStop;
+import frc.robot.commands.NeoStop;
 import frc.robot.subsystems.Base;
 import frc.robot.subsystems.Falcon;
+import frc.robot.subsystems.Neo;
 import frc.robot.Robot;
 import frc.robot.commands.TestCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -44,6 +47,7 @@ public class RobotContainer {
   public static Base base = new Base();
   public static Vision vision = new Vision(); 
   public static Falcon falcon = new Falcon();
+  public static Neo neo = new Neo();
 
   //Controller Constants 
   public static final int KLogitechDrive = 0;
@@ -89,6 +93,8 @@ public class RobotContainer {
     }));*/
     base.setDefaultCommand(new DriveWithJoysticks());
     falcon.setDefaultCommand(new FalconStop());
+    //neo.setDefaultCommand(new NeoStop());
+    neo.setDefaultCommand(new NeoWithJoysticks());
     //Controllers 
     logitech = new Joystick(KLogitechDrive);
     xbox = new Joystick(KXboxArms);
@@ -168,6 +174,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
     btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
+    //btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
+    //btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
+    //btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
+    //btn6.whileHeld(new RunCommand(() -> neo.move(1.0, 1.0)));
+    //btn3.whileHeld(new RunCommand(() -> neo.move(1.0)));
+    //btn4.whileHeld(new RunCommand(() -> neo.move(-1.0)));
   }
 
 
