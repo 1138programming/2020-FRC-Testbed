@@ -17,12 +17,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Falcon extends SubsystemBase {
 
-  public static final int KFalcon1 = 0;
-  public static final int KFalcon2 = 1;
-  public static final int KFalcon3 = 2;
-  public static final int KFalcon4 = 3;
-  public static final int KFalcon5 = 4;
-  public static final int KFalcon6 = 5;
+  public static final int KFalcon0 = 0;
+  public static final int KFalcon1 = 1;
+  public static final int KFalcon2 = 2;
+  public static final int KFalcon3 = 3;
+  public static final int KFalcon4 = 4;
+  public static final int KFalcon5 = 5;
+  public static final int KFalcon6 = 6;
+  public static final int KFalcon7 = 7;
+  public static final int KFalcon8 = 8;
+  public static final int KFalcon9 = 9;
+
 
   private TalonSRX Falcon0;
   private TalonSRX Falcon1;
@@ -30,16 +35,24 @@ public class Falcon extends SubsystemBase {
   private TalonSRX Falcon3;
   private TalonSRX Falcon4;
   private TalonSRX Falcon5;
+  private TalonSRX Falcon6;
+  private TalonSRX Falcon7;
+  private TalonSRX Falcon8;
+  private TalonSRX Falcon9;
 
 
   public Falcon() {
-    Falcon0 = new TalonSRX(KFalcon1);
-    Falcon1 = new TalonSRX(KFalcon2);
-    Falcon2 = new TalonSRX(KFalcon3);
-    Falcon3 = new TalonSRX(KFalcon4);
-    Falcon4 = new TalonSRX(KFalcon5);
-    Falcon5 = new TalonSRX(KFalcon6);
-    
+    Falcon0 = new TalonSRX(KFalcon0);
+    Falcon1 = new TalonSRX(KFalcon1);
+    Falcon2 = new TalonSRX(KFalcon2);
+    Falcon3 = new TalonSRX(KFalcon3);
+    Falcon4 = new TalonSRX(KFalcon4);
+    Falcon5 = new TalonSRX(KFalcon5);
+    Falcon6 = new TalonSRX(KFalcon6);
+    Falcon7 = new TalonSRX(KFalcon7);
+    Falcon8 = new TalonSRX(KFalcon8);
+    Falcon9 = new TalonSRX(KFalcon9);
+
   }
 
   @Override
@@ -48,11 +61,16 @@ public class Falcon extends SubsystemBase {
   }
 
   public void move(double speed) {
-    Falcon0.set(ControlMode.PercentOutput, speed);
-    Falcon1.set(ControlMode.PercentOutput, speed);
-    Falcon2.set(ControlMode.PercentOutput, speed);
-    Falcon3.set(ControlMode.PercentOutput, speed);
-    Falcon4.set(ControlMode.PercentOutput, speed);
-    Falcon5.set(ControlMode.PercentOutput, speed);
+    // Falcon0.set(ControlMode.PercentOutput, speed);
+    // Falcon1.set(ControlMode.PercentOutput, speed);
+    // Falcon2.set(ControlMode.PercentOutput, speed);
+    // Falcon3.set(ControlMode.PercentOutput, speed);
+    // Falcon4.set(ControlMode.PercentOutput, speed);
+    // Falcon5.set(ControlMode.PercentOutput, speed);
+    // Falcon6.set(ControlMode.PercentOutput, speed);
+    // Falcon7.set(ControlMode.PercentOutput, speed);
+    // Falcon8.set(ControlMode.PercentOutput, speed);
+    Falcon9.set(ControlMode.PercentOutput, speed);
+
   }
 }
