@@ -7,7 +7,8 @@
 
 package frc.robot.subsystems;
 
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,16 +17,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Neo extends SubsystemBase {
 
-    public static final int TopSparkMax = 10;
-	  public static final int BottomSparkMax = 11;
+    //public static final int KTopSparkMax = 11;
+    //public static final int KBottomSparkMax = 10;
+    public static final int KTopTalon = 4;
+    public static final int KBottomTalon = 2;
 
-    private CANSparkMax TopMotor; 
-	  private CANSparkMax BottomMotor; 
+    //private CANSparkMax TopMotor; 
+	  //private CANSparkMax BottomMotor; 
+    private TalonSRX TopMotor;
+    private TalonSRX BottomMotor;
 
     public Neo () {
-		  TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
-		  BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
-      BottomMotor.setInverted(true);
+		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+      // BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+      TopMotor = new TalonSRX(KTopTalon);
+      BottomMotor = new TalonSRX(KBottomTalon);
+
+      TopMotor.setInverted(true);
+      BottomMotor.setInverted(false);
     }
 
   @Override
@@ -39,14 +48,13 @@ public class Neo extends SubsystemBase {
     NeoMotor1.set(speed);
     NeoMotor2.set(speed);
 	}*/
-
   /*public void neoMotorStop() {
     NeoMotor1.set(0);
     NeoMotor2.set(0);
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
-    TopMotor.set(topSpeed);
-    BottomMotor.set(bottomSpeed);
+    TopMotor.set(ControlMode.PercentOutput, topSpeed);
+    BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
 }

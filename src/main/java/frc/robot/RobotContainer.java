@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoysticks;
+import frc.robot.subsystems.Vision;
 import frc.robot.commands.NeoWithJoysticks; 
 import frc.robot.commands.FalconStop;
 import frc.robot.commands.NeoStop;
@@ -44,8 +45,10 @@ public class RobotContainer {
   // number it is.
   //Create Robot
   public static Base base = new Base();
-  public static Falcon falcon = new Falcon(); 
+  public static Vision vision = new Vision(); 
+  public static Falcon falcon = new Falcon();
   public static Neo neo = new Neo();
+
   //Controller Constants 
   public static final int KLogitechDrive = 0;
   public static final int KXboxArms = 1;
@@ -171,10 +174,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
     btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
-    btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
-    btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
-    btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
-    btn6.whileHeld(new RunCommand(() -> neo.move(1.0, 1.0)));
+    //btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
+    //btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
+    //btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
+    //btn6.whileHeld(new RunCommand(() -> neo.move(1.0, 1.0)));
     //btn3.whileHeld(new RunCommand(() -> neo.move(1.0)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(-1.0)));
   }
