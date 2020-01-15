@@ -41,7 +41,7 @@ public class Neo extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler 
 
-    
+    SmartDashboard.putNumber("Flywheel Speed", TopMotor.getSelectedSensorVelocity()); 
   }
 
   /*public void neoMotorMove(double speed) {
