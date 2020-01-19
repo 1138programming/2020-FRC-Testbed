@@ -25,6 +25,10 @@ public class Neo extends SubsystemBase {
     public static double topMotorSpeed;
     public static double bottomMotorSpeed;
 
+    public static double flywheelTopPID;
+    public static double flywheelBottomPID; 
+    public static double setPoint;
+
     //private CANSparkMax TopMotor; 
 	  //private CANSparkMax BottomMotor; 
     private TalonSRX TopMotor;
@@ -38,14 +42,21 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setInverted(true);
       BottomMotor.setInverted(false);
+
+      TopMotor.setSensorPhase(true);
+
+      //flywheelTopPID = new PIDController(0.1, 0, 0);
+      //flywheelBottomPID = new PIDController(0.1, 0, 0);
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
-    SmartDashboard.getNumber("Flywheel top speed", TopMotor.getSpeed()); 
-    SmartDashboard.putNumber("Flywheel bottom speed", BottomMotor.getSpeed());
+    SmartDashboard.putNumber("Flywheel top speed", TopMotor.getSelectedSensorVelocity()); 
+    SmartDashboard.putNumber("Flywheel bottom speed", BottomMotor.getSelectedSensorVelocity());
     
+    //getTopSpeed = TopMotor.getSelectedSensorVelocity();
+    //getBottomSpeed = BottomMotor.getSelectedSensorVelocity(); 
   }
 
   /*public void neoMotorMove(double speed) {
@@ -61,4 +72,13 @@ public class Neo extends SubsystemBase {
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
+
+  /*public double getSetpoint() {
+    return flywheelPID.getSetpoint();
+  }
+
+  public double calculate() {
+     flywheelTopPID.calculate();
+  }*/
+
 }
