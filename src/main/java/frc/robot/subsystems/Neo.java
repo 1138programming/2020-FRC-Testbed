@@ -22,6 +22,9 @@ public class Neo extends SubsystemBase {
     public static final int KTopTalon = 4;
     public static final int KBottomTalon = 2;
 
+    public static double topMotorSpeed;
+    public static double bottomMotorSpeed;
+
     //private CANSparkMax TopMotor; 
 	  //private CANSparkMax BottomMotor; 
     private TalonSRX TopMotor;
@@ -40,7 +43,8 @@ public class Neo extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
-
+    SmartDashboard.putNumber("Flywheel top speed", topMotorSpeed); 
+    SmartDashboard.putNumber("Flywheel bottom speed", bottomMotorSpeed);
     
   }
 
@@ -54,6 +58,8 @@ public class Neo extends SubsystemBase {
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
+    topMotorSpeed = topSpeed;
+    bottomMotorSpeed = bottomSpeed;
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
