@@ -14,7 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.controller.PIDController;
 public class Neo extends SubsystemBase {
 
     //public static final int KTopSparkMax = 11;
@@ -25,8 +25,8 @@ public class Neo extends SubsystemBase {
     public static double topMotorSpeed;
     public static double bottomMotorSpeed;
 
-    public static double flywheelTopPID;
-    public static double flywheelBottomPID; 
+    public static PIDController flywheelTopPID;
+    public static PIDController flywheelBottomPID; 
     public static double setPoint;
 
     //private CANSparkMax TopMotor; 
@@ -45,18 +45,15 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setSensorPhase(true);
 
-      //flywheelTopPID = new PIDController(0.1, 0, 0);
-      //flywheelBottomPID = new PIDController(0.1, 0, 0);
+      flywheelTopPID = new PIDController(0.1, 0, 0);
+      flywheelBottomPID = new PIDController(0.1, 0, 0);
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
-    SmartDashboard.putNumber("Flywheel top speed", TopMotor.getSelectedSensorVelocity()); 
-    SmartDashboard.putNumber("Flywheel bottom speed", BottomMotor.getSelectedSensorVelocity());
-    
-    //getTopSpeed = TopMotor.getSelectedSensorVelocity();
-    //getBottomSpeed = BottomMotor.getSelectedSensorVelocity(); 
+    SmartDashboard.putNumber("Flywheel top speed", getTopSpeed()); 
+    SmartDashboard.putNumber("Flywheel bottom speed", getBottomSpeed());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -73,12 +70,25 @@ public class Neo extends SubsystemBase {
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
 
-  /*public double getSetpoint() {
-    return flywheelPID.getSetpoint();
+  public double getTopSpeed() {
+    return TopMotor.getSelectedSensorVelocity();
   }
 
-  public double calculate() {
-     flywheelTopPID.calculate();
-  }*/
+  public double getBottomSpeed() {
+    return BottomMotor.getSelectedSensorVelocity();
+  }
+
+  public double getTopSetpoint() {
+    return flywheelTopPID.getSetpoint();
+  }
+
+  public double getBottomSetpoint() {
+    return flywheelBottomPID.getSetpoint();
+  }
+
+  public void calculate() {
+     flywheelTopPID.calculate(getTopSpeed());
+     flywheelBottomPID.calculate(getBottomSpeed());
+  }
 
 }
