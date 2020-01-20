@@ -34,6 +34,11 @@ public class Neo extends SubsystemBase {
     private TalonSRX TopMotor;
     private TalonSRX BottomMotor;
 
+    private double topSpeed = 0;
+    private double bottomSpeed = 0;
+    private double topAccel = 0;
+    private double bottomAccel = 0;
+
     public Neo () {
 		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
       // BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -45,8 +50,14 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setSensorPhase(true);
 
-      flywheelTopPID = new PIDController(0.1, 0, 0);
-      flywheelBottomPID = new PIDController(0.1, 0, 0);
+      flywheelTopPID = new PIDController(0.0001, 0, 0);
+      flywheelBottomPID = new PIDController(0.00001, 0, 0);
+
+      flywheelTopPID.enableContinuousInput(-40000, 40000);
+      flywheelTopPID.disableContinuousInput();
+
+      flywheelTopPID.reset();
+      //flywheelTopPID.
     }
 
   @Override
@@ -66,8 +77,12 @@ public class Neo extends SubsystemBase {
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
+    this.topSpeed = topSpeed;
+    this.bottomSpeed = bottomSpeed;
+
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
+    SmartDashboard.putNumber("Top Flywheel VOLTAGE", topSpeed);
   }
 
   public double getTopSpeed() {
@@ -76,6 +91,15 @@ public class Neo extends SubsystemBase {
 
   public double getBottomSpeed() {
     return BottomMotor.getSelectedSensorVelocity();
+  }
+
+  public void setTopSetpoint (double setpoint){
+    SmartDashboard.putNumber("Top flywheel setpoint", setpoint);
+    flywheelTopPID.setSetpoint(setpoint);
+  }
+
+  public void setBottomSetpoint (double setpoint){
+    flywheelBottomPID.setSetpoint(setpoint);
   }
 
   public double getTopSetpoint() {
@@ -87,8 +111,13 @@ public class Neo extends SubsystemBase {
   }
 
   public void calculate() {
-     flywheelTopPID.calculate(getTopSpeed());
-     flywheelBottomPID.calculate(getBottomSpeed());
-  }
+    //flywheelBottomPID.calculate(getBottomSpeed())
+    topAccel = flywheelTopPID.calculate(getTopSpeed());
+    SmartDashboard.putNumber("Top flywheel accel", topAccel);
+    bottomAccel = flywheelBottomPID.calculate(getTopSpeed());
 
+    move(topAccel + topSpeed, bottomSpeed);
+
+    SmartDashboard.putNumber("Top Flywheel error", flywheelTopPID.getPositionError());
+  }
 }

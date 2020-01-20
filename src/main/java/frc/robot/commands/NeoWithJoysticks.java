@@ -43,11 +43,11 @@ public class NeoWithJoysticks extends CommandBase {
 
     //RobotContainer.neo.move(speed);
     //RobotContainer.neo.move(0.5);
-    RobotContainer.neo.move(SmartDashboard.getNumber("Flywheel top", 0.0), SmartDashboard.getNumber("Flywheel bottom", 0.0));
+    //RobotContainer.neo.move(SmartDashboard.getNumber("Flywheel top", 0.0), SmartDashboard.getNumber("Flywheel bottom", 0.0));
+    RobotContainer.neo.setTopSetpoint(SmartDashboard.getNumber("Flywheel top", 0.0));
+    RobotContainer.neo.setBottomSetpoint(SmartDashboard.getNumber("Flywheel bottom", 0.0));
+    RobotContainer.neo.calculate();
     SmartDashboard.putNumber("Flywheel", speed);
-
- 
-  
   }
 
   // Called once the command ends or is interrupted.
