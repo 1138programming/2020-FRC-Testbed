@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
@@ -40,6 +42,9 @@ public class Base extends SubsystemBase {
   private TalonSRX driveLeftFront;
   private TalonSRX driveRightRear; 
   private TalonSRX driveLeftRear;
+
+  // Optical sensor
+  private final DigitalInput opticalSensor;
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -66,6 +71,8 @@ public class Base extends SubsystemBase {
     driveRightRear.set(ControlMode.Follower, driveRightFront.getDeviceID());
     driveLeftTop.set(ControlMode.Follower, driveLeftFront.getDeviceID());
     driveLeftRear.set(ControlMode.Follower, driveLeftFront.getDeviceID());
+
+    opticalSensor = new DigitalInput(3);
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -103,6 +110,7 @@ public class Base extends SubsystemBase {
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
     SmartDashboard.putNumber("IR", IR);
+    SmartDashboard.putBoolean("Optical sensor", opticalSensor.get());
     // This method will be called once per scheduler 
   }
 
