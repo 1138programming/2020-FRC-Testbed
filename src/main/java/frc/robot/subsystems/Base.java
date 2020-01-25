@@ -25,6 +25,9 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+
 public class Base extends SubsystemBase {
 
   public static final int KDriveRightTopTalon = 4;
@@ -50,6 +53,8 @@ public class Base extends SubsystemBase {
   private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
+  private final AHRS ahrs;
+
   public Base() {
     driveRightTop = new TalonSRX(KDriveRightTopTalon);
     driveLeftTop = new TalonSRX(KDriveLeftTopTalon);
@@ -57,6 +62,8 @@ public class Base extends SubsystemBase {
     driveLeftFront = new TalonSRX(KDriveLeftFrontTalon);
     driveRightRear = new TalonSRX(KDriveRightRearTalon);
     driveLeftRear = new TalonSRX(KDriveLeftRearTalon);
+    ahrs = new AHRS(SPI.Port.kMXP);
+  }
 
     driveRightFront.setInverted(true);
     driveRightRear.setInverted(true);
@@ -109,5 +116,29 @@ public class Base extends SubsystemBase {
   public void tankDrive(double leftSpeed, double rightSpeed) {
     driveRightFront.set(ControlMode.PercentOutput, rightSpeed);
     driveLeftFront.set(ControlMode.PercentOutput, leftSpeed);
+  }
+  public void zeroYaw(){
+    ahrs.zeroYaw();
+  }
+
+  public double getFacingDirection(){
+    double yawAngle;
+    yawAngle = ahrs.getAngle();
+    return yawAngle;
+  }
+
+  public double getVelocityX(){
+    double velocityX = ahrs.getVelocityX();
+    return velocityX;
+  }
+
+  public double getVelocityY(){
+    double velocityY = ahrs.getVelocityY();
+    return velocityY;
+  }
+
+  public double getVelocityZ(){
+    double velocityZ = ahrs.getVelocityZ();
+    return velocityZ;
   }
 }
