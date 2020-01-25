@@ -63,7 +63,7 @@ public class Base extends SubsystemBase {
     driveRightRear = new TalonSRX(KDriveRightRearTalon);
     driveLeftRear = new TalonSRX(KDriveLeftRearTalon);
     ahrs = new AHRS(SPI.Port.kMXP);
-  }
+  
 
     driveRightFront.setInverted(true);
     driveRightRear.setInverted(true);
