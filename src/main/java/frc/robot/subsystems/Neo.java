@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.controller.TakeBackHalf;
 
 public class Neo extends SubsystemBase {
 
@@ -27,6 +28,8 @@ public class Neo extends SubsystemBase {
     private TalonSRX TopMotor;
     private TalonSRX BottomMotor;
 
+    private TakeBackHalf tbhController;
+
     public Neo () {
 		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
       // BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -35,13 +38,19 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setInverted(true);
       BottomMotor.setInverted(false);
+
+      TopMotor.setSensorPhase(true);
+
+      tbhController = new TakeBackHalf(0.000001);
+      tbhController.setInputRange(-40000, 40000);
+      tbhController.setOutputRange(-1, 1);
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
 
-    
+    SmartDashboard.putNumber("Flywheel top speed", getTopSpeed());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -56,5 +65,22 @@ public class Neo extends SubsystemBase {
   public void move(double topSpeed, double bottomSpeed) {
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
+  }
+
+  public double getTopSpeed() {
+    return TopMotor.getSelectedSensorVelocity();
+  }
+
+  public double getTopSetpoint() {
+    return tbhController.getSetpoint();
+  }
+
+  public void setTopSetpoint(double setpoint) {
+    tbhController.setSetpoint(setpoint);
+  }
+  
+  public void calculate() {
+    double topSpeed = tbhController.calculate(getTopSpeed);
+    move(topSpeed, 0);
   }
 }
