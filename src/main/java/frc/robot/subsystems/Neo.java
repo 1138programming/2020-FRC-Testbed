@@ -80,7 +80,7 @@ public class Neo extends SubsystemBase {
   }
   
   public void calculate() {
-    double topSpeed = tbhController.calculate(getTopSpeed);
+    double topSpeed = tbhController.calculate(getTopSpeed());
     move(topSpeed, 0);
   }
 }
