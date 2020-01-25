@@ -174,7 +174,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
     btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
-    //btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
+    btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
     //btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
     //btn6.whileHeld(new RunCommand(() -> neo.move(1.0, 1.0)));
