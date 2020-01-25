@@ -72,7 +72,7 @@ public class Base extends SubsystemBase {
     driveLeftTop.set(ControlMode.Follower, driveLeftFront.getDeviceID());
     driveLeftRear.set(ControlMode.Follower, driveLeftFront.getDeviceID());
 
-    opticalSensor = new DigitalInput(3);
+    opticalSensor = new DigitalInput(1);
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
