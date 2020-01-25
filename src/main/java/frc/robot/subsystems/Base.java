@@ -54,6 +54,14 @@ public class Base extends SubsystemBase {
   private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
   private final AHRS ahrs;
+  
+  private static double yawAngle;
+  private static double velocityX;
+  private static double velocityY;
+  private static double velocityZ;
+  private static double displacementX;
+  private static double displacementY;
+  private static double displacementZ;
 
   public Base() {
     driveRightTop = new TalonSRX(KDriveRightTopTalon);
@@ -110,6 +118,13 @@ public class Base extends SubsystemBase {
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
     SmartDashboard.putNumber("IR", IR);
+    SmartDashboard.putNumber("FacingAngle", yawAngle);
+    SmartDashboard.putNumber("VelocityX", velocityX);
+    SmartDashboard.putNumber("VelocityY", velocityY);
+    SmartDashboard.putNumber("VelocityZ", velocityZ);
+    SmartDashboard.putNumber("DisplacementX", displacementX);
+    SmartDashboard.putNumber("DisplacementY", displacementY);
+    SmartDashboard.putNumber("DisplacementZ", displacementZ);
     // This method will be called once per scheduler 
   }
 
@@ -117,28 +132,42 @@ public class Base extends SubsystemBase {
     driveRightFront.set(ControlMode.PercentOutput, rightSpeed);
     driveLeftFront.set(ControlMode.PercentOutput, leftSpeed);
   }
-  public void zeroYaw(){
+  public void yawReset(){
     ahrs.zeroYaw();
   }
 
   public double getFacingDirection(){
-    double yawAngle;
     yawAngle = ahrs.getAngle();
     return yawAngle;
   }
 
   public double getVelocityX(){
-    double velocityX = ahrs.getVelocityX();
+    velocityX = ahrs.getVelocityX();
     return velocityX;
   }
 
   public double getVelocityY(){
-    double velocityY = ahrs.getVelocityY();
+    velocityY = ahrs.getVelocityY();
     return velocityY;
   }
 
   public double getVelocityZ(){
-    double velocityZ = ahrs.getVelocityZ();
+    velocityZ = ahrs.getVelocityZ();
     return velocityZ;
+  }
+
+  public double getDisplacementX(){
+    displacementX = ahrs.getDisplacementX();
+    return displacementX;
+  }
+
+  public double getDisplacementY(){
+    displacementY = ahrs.getDisplacementY();
+    return displacementY;
+  }
+
+  public double getDisplacementZ(){
+    displacementZ = ahrs.getDisplacementZ();
+    return displacementZ;
   }
 }
