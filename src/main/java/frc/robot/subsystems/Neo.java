@@ -23,16 +23,19 @@ public class Neo extends SubsystemBase {
     public static final int KTopTalon = 12;
     public static final int KBottomTalon = 8;
 
-    public static final double KTakeBackHalfGain = 0.000006; 
+    public static final double KTopGain = 0.000006;
+    public static final double KBottomGain = 0.000006;
 
     //private CANSparkMax TopMotor; 
 	  //private CANSparkMax BottomMotor; 
     private TalonSRX TopMotor;
     private TalonSRX BottomMotor;
 
-    private TakeBackHalf tbhController;
+    private TakeBackHalf topController;
+    private TakeBackHalf bottomController;
 
     private double topSpeed;
+    private double bottomSpeed;
 
     public Neo () {
 		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -45,21 +48,26 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setSensorPhase(true);
 
-      tbhController = new TakeBackHalf(KTakeBackHalfGain);
-      SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
-      tbhController.setInputRange(-80000, 80000);
-      tbhController.setOutputRange(-1, 1);
+      topController = new TakeBackHalf(KTopGain);
+      bottomController = new TakeBackHalf(KBottomGain);
+
+      //SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
+      topController.setInputRange(-80000, 80000);
+      topController.setOutputRange(-1, 1);
+
+      bottomController.setInputRange(-80000, 80000);
+      bottomController.setOutputRange(-1, 1);
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
 
-    SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
-    SmartDashboard.putNumber("Flywheel top speed", getTopSpeed());
-    SmartDashboard.putNumber("Flywheel top error", tbhController.getError());
-    SmartDashboard.putNumber("Fylwheel top PWM", topSpeed);
-    SmartDashboard.putNumber("Flywheel top h0", tbhController.getH0());
+    //SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
+    //SmartDashboard.putNumber("Flywheel top speed", getTopSpeed());
+    //SmartDashboard.putNumber("Flywheel top error", tbhController.getError());
+    //SmartDashboard.putNumber("Fylwheel top PWM", topSpeed);
+    //SmartDashboard.putNumber("Flywheel top h0", tbhController.getH0());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -72,7 +80,6 @@ public class Neo extends SubsystemBase {
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
-    this.topSpeed = topSpeed;
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
@@ -81,16 +88,28 @@ public class Neo extends SubsystemBase {
     return TopMotor.getSelectedSensorVelocity();
   }
 
-  public double getTopSetpoint() {
-    return tbhController.getSetpoint();
+  public double getBottomSpeed() {
+    return BottomMotor.getSelectedSensorVelocity();
   }
 
-  public void setTopSetpoint(double setpoint) {
-    tbhController.setSetpoint(setpoint);
+  public double getTopSetpoint() {
+    //return tbhController.getSetpoint();
+    return topController.getSetpoint();
+  }
+
+  public double getBottomSetpoint() {
+    //return tbhController.getSetpoint();
+    return topController.getSetpoint();
+  }
+
+  public void setSetpoint(double topSetpoint, double bottomSetpoint) {
+    topController.setSetpoint(topSetpoint);
+    bottomController.setSetpoint(bottomSetpoint);
   }
   
   public void calculate() {
-    double topSpeed = tbhController.calculate(getTopSpeed());
-    move(topSpeed, 0);
+    topSpeed = topController.calculate(getTopSpeed());
+    bottomSpeed = bottomController.calculate(getBottomSpeed());
+    move(topSpeed, bottomSpeed);
   }
 }
