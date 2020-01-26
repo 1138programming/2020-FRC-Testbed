@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.controller.TakeBackHalf;
 
 /**
  * An example command that uses an example subsystem.
@@ -32,7 +33,7 @@ public class NeoWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Flywheel Top Setpoint", 0.0);
+    SmartDashboard.putNumber("Flywheel top", 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,8 +43,10 @@ public class NeoWithJoysticks extends CommandBase {
 
     //RobotContainer.neo.move(speed);
     //RobotContainer.neo.move(0.5);
-    RobotContainer.neo.setTopSetpoint(SmartDashboard.getNumber("Flywheel Top Setpoint", 0.0));
+    RobotContainer.neo.setTopSetpoint(SmartDashboard.getNumber("Flywheel top", 0.0));
     RobotContainer.neo.calculate();
+    //SmartDashboard.putNumber("Get Error", TakeBackHalf.getError());
+    //SmartDashboard.putNumber("Get m_H0", getm_H0());
     //SmartDashboard.putNumber("Flywheel", speed);
   
   }

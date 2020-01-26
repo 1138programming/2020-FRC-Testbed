@@ -9,9 +9,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//import com.revrobotics.*;
+//import com.revrobotics.CANSparkMax;
+//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.controller.TakeBackHalf;
@@ -23,12 +23,16 @@ public class Neo extends SubsystemBase {
     public static final int KTopTalon = 12;
     public static final int KBottomTalon = 8;
 
+    public static final double KTakeBackHalfGain = 0.000006; 
+
     //private CANSparkMax TopMotor; 
 	  //private CANSparkMax BottomMotor; 
     private TalonSRX TopMotor;
     private TalonSRX BottomMotor;
 
     private TakeBackHalf tbhController;
+
+    private double topSpeed;
 
     public Neo () {
 		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -41,8 +45,9 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setSensorPhase(true);
 
-      tbhController = new TakeBackHalf(0.000001);
-      tbhController.setInputRange(-40000, 40000);
+      tbhController = new TakeBackHalf(KTakeBackHalfGain);
+      SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
+      tbhController.setInputRange(-80000, 80000);
       tbhController.setOutputRange(-1, 1);
     }
 
@@ -50,7 +55,11 @@ public class Neo extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler 
 
+    SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
     SmartDashboard.putNumber("Flywheel top speed", getTopSpeed());
+    SmartDashboard.putNumber("Flywheel top error", tbhController.getError());
+    SmartDashboard.putNumber("Fylwheel top PWM", topSpeed);
+    SmartDashboard.putNumber("Flywheel top h0", tbhController.getH0());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -63,6 +72,7 @@ public class Neo extends SubsystemBase {
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
+    this.topSpeed = topSpeed;
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
