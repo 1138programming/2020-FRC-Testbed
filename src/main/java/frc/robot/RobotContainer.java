@@ -14,6 +14,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.commands.NeoWithJoysticks; 
 import frc.robot.commands.FalconStop;
 import frc.robot.commands.SeekTarget;
+import frc.robot.commands.AimTarget;
 import frc.robot.commands.NeoStop;
 import frc.robot.subsystems.Base;
 import frc.robot.subsystems.Falcon;
@@ -94,7 +95,7 @@ public class RobotContainer {
     }));*/
     base.setDefaultCommand(new DriveWithJoysticks());
     falcon.setDefaultCommand(new FalconStop());
-    vision.setDefaultCommand(new SeekTarget());
+    vision.setDefaultCommand(new AimTarget());
     //neo.setDefaultCommand(new NeoStop());
     neo.setDefaultCommand(new NeoWithJoysticks());
     //Controllers 

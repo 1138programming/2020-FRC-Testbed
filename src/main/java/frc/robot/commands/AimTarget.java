@@ -11,14 +11,14 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Base;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SeekTarget extends CommandBase {
+public class AimTarget extends CommandBase {
   /**
-   * Creates a new SeekTarget.
+   * Creates a new AimTarget.
    */
-  public SeekTarget() {
+  public AimTarget() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.vision);
     addRequirements(RobotContainer.base);
@@ -32,19 +32,27 @@ public class SeekTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double adjustment  = 0.0;
-      if (!RobotContainer.vision.targetVisible()) {
-        adjustment = 0.3; 
-      }
-      else {
-          // run target code
-      } 
-      double leftSpeed =+ adjustment;
-      double rightSpeed =- adjustment;
+      double kp = -0.1; // constant proportional
+      double min_command = 0.05; // represents the minimum amount of power needed for the robot to actually move
+      double tx = RobotContainer.vision.getXOffset();
+      double heading_error = -tx;
+      double steering_adjust = 0.0;
+      double leftSpeed = 0.0;
+      double rightSpeed = 0.0;
 
-      SmartDashboard.putNumber("Left LL Seeking Speed", leftSpeed); // temp
-      SmartDashboard.putNumber("Right LL Seeking Speed", rightSpeed); // temp
-      //RobotContainer.base.tankDrive(leftSpeed, rightSpeed);
+      if (tx > 1.0) {
+          steering_adjust = kp * heading_error - min_command;
+      }
+      else if (tx < 1.0) {
+          steering_adjust = kp*heading_error + min_command;
+      }
+      
+      leftSpeed += steering_adjust;
+      rightSpeed -= steering_adjust;
+
+      //RobotContainer.base.tankDrive(leftSpeed, rightSpeed); 
+      SmartDashboard.putNumber("Left LL Aim Correction Speed", leftSpeed); // temp
+      SmartDashboard.putNumber("Right LL Aim Correction Speed", rightSpeed); // temp
   }
 
   // Called once the command ends or is interrupted.
