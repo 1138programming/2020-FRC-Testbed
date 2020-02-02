@@ -26,20 +26,19 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 
 public class Base extends SubsystemBase {
-
-  public static final int KDriveRightTopTalon = 4;
-  public static final int KDriveLeftTopTalon = 9; 
-  public static final int KDriveRightFrontTalon = 1;
-  public static final int KDriveLeftFrontTalon = 5; 
-  public static final int KDriveRightRearTalon = 2; 
-  public static final int KDriveLeftRearTalon = 8; 
+  public static final int KDriveRightTopTalon = 6;
+  public static final int KDriveLeftTopTalon = 11; 
+  public static final int KDriveRightFrontTalon = 3;
+  public static final int KDriveLeftFrontTalon = 4;
+  //public static final int KDriveRightRearTalon = 2; 
+  //public static final int KDriveLeftRearTalon = 8; 
 
   private TalonSRX driveRightTop;
   private TalonSRX driveLeftTop;  
   private TalonSRX driveRightFront; 
   private TalonSRX driveLeftFront;
-  private TalonSRX driveRightRear; 
-  private TalonSRX driveLeftRear;
+  //private TalonSRX driveRightRear; 
+  //private TalonSRX driveLeftRear;
 
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -55,17 +54,19 @@ public class Base extends SubsystemBase {
     driveLeftTop = new TalonSRX(KDriveLeftTopTalon);
     driveRightFront = new TalonSRX(KDriveRightFrontTalon); 
     driveLeftFront = new TalonSRX(KDriveLeftFrontTalon);
-    driveRightRear = new TalonSRX(KDriveRightRearTalon);
-    driveLeftRear = new TalonSRX(KDriveLeftRearTalon);
+    //driveRightRear = new TalonSRX(KDriveRightRearTalon);
+    //driveLeftRear = new TalonSRX(KDriveLeftRearTalon);
 
-    driveRightFront.setInverted(true);
-    driveRightRear.setInverted(true);
+    driveRightFront.setInverted(false);
     driveRightTop.setInverted(true);
 
+    driveLeftFront.setInverted(true);
+    driveLeftTop.setInverted(true);
+
     driveRightTop.set(ControlMode.Follower, driveRightFront.getDeviceID());
-    driveRightRear.set(ControlMode.Follower, driveRightFront.getDeviceID());
+    //driveRightRear.set(ControlMode.Follower, driveRightFront.getDeviceID());
     driveLeftTop.set(ControlMode.Follower, driveLeftFront.getDeviceID());
-    driveLeftRear.set(ControlMode.Follower, driveLeftFront.getDeviceID());
+    //driveLeftRear.set(ControlMode.Follower, driveLeftFront.getDeviceID());
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -107,6 +108,8 @@ public class Base extends SubsystemBase {
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
+    SmartDashboard.putNumber("Base left speed", leftSpeed);
+    SmartDashboard.putNumber("Base right speed", rightSpeed);
     driveRightFront.set(ControlMode.PercentOutput, rightSpeed);
     driveLeftFront.set(ControlMode.PercentOutput, leftSpeed);
   }

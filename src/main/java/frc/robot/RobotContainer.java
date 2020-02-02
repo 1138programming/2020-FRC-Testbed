@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.PositionBase;
 import frc.robot.commands.NeoWithJoysticks; 
 import frc.robot.commands.FalconStop;
 import frc.robot.commands.NeoStop;
@@ -149,7 +150,7 @@ public class RobotContainer {
     double Y = logitech.getRawAxis(KRightYAxis);
     SmartDashboard.putNumber("Right axis", Y);
     if (Y > KDeadZone || Y < -KDeadZone) {
-      return Y;
+      return -Y;
     } else {
       return 0; 
     }
@@ -159,7 +160,7 @@ public class RobotContainer {
     double Y = logitech.getRawAxis(KLeftYAxis);
     SmartDashboard.putNumber("Left axis", Y);
     if (Y > KDeadZone || Y < -KDeadZone) {
-      return Y;
+      return -Y;
     } else {
       return 0; 
     }
@@ -172,14 +173,15 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
-    btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
+    //btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
+    //btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
     //btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
     //btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
     //btn6.whileHeld(new RunCommand(() -> neo.move(1.0, 1.0)));
     //btn3.whileHeld(new RunCommand(() -> neo.move(1.0)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(-1.0)));
+    btn2.whileHeld(new PositionBase());
   }
 
 

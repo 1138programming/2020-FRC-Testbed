@@ -20,8 +20,8 @@ public class Falcon extends SubsystemBase {
   public static final int KFalcon1 = 0;
   public static final int KFalcon2 = 1;
   public static final int KFalcon3 = 2;
-  public static final int KFalcon4 = 3;
-  public static final int KFalcon5 = 4;
+  public static final int KFalcon4 = 7;
+  public static final int KFalcon5 = 9;
   public static final int KFalcon6 = 5;
 
   private TalonSRX Falcon0;

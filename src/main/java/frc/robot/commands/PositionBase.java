@@ -8,24 +8,27 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Base;
+import frc.robot.subsystems.Vision;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class DriveWithJoysticks extends CommandBase {
+public class PositionBase extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   /**
-   * Creates a new DriveWithJoysticks.
+   * Creates a new PositionBase.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveWithJoysticks() {
+  public PositionBase() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.base);
+    addRequirements(RobotContainer.vision);
   }
 
   // Called when the command is initially scheduled.
@@ -36,11 +39,18 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftSpeed = Robot.oi.getLeftAxis();
-    double rightSpeed = Robot.oi.getRightAxis();
-    
-    RobotContainer.base.tankDrive(leftSpeed, rightSpeed);
-    //RobotContainer.base.tankDrive(0.5, 0.5);
+    double output = RobotContainer.vision.getXOutput(); 
+    if(-0.1 < output && 0.1 > output) {
+      RobotContainer.base.tankDrive(0, 0);
+    } 
+    else if (output > 0.1) {
+      RobotContainer.base.tankDrive(-0.5, 0.5);
+    } 
+    else if (output < -0.1) {
+      RobotContainer.base.tankDrive(0.5, -0.5);
+    } 
+
+    SmartDashboard.putNumber("XOutputInCommand", output);
   }
 
   // Called once the command ends or is interrupted.
@@ -51,10 +61,10 @@ public class DriveWithJoysticks extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 
   public String getName() {
-    return "Drive with joysticks";
+    return "Position base";
   }
 }
