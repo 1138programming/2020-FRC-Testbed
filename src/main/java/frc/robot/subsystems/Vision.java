@@ -30,6 +30,8 @@ public class Vision extends SubsystemBase {
   public static double currentY;
 
   public static final double kP = 0.1; 
+  public static final double kI = 0.05;
+  public static final double kD = 0.2; 
   
   public static double xError; 
   public static double yError;
@@ -67,14 +69,14 @@ public class Vision extends SubsystemBase {
   public double getXOutput() {
     currentX = x;
     xError = 0.0 - currentX;
-    xOutput = kP * xError;
+    xOutput = kP * xError + kI + kD;
     return xOutput;
   }
 
   public double getYOutput() {
     currentY = y;
     yError = 0.0 - currentY;
-    yOutput = kP * yError;
+    yOutput = kP * yError + kI + kD;
     return yOutput;
   }
 }

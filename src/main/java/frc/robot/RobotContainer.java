@@ -15,6 +15,7 @@ import frc.robot.commands.PositionBase;
 import frc.robot.commands.NeoWithJoysticks; 
 import frc.robot.commands.FalconStop;
 import frc.robot.commands.NeoStop;
+import frc.robot.commands.ResetSpeed;
 import frc.robot.subsystems.Base;
 import frc.robot.subsystems.Falcon;
 import frc.robot.subsystems.Neo;
@@ -182,6 +183,7 @@ public class RobotContainer {
     //btn3.whileHeld(new RunCommand(() -> neo.move(1.0)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(-1.0)));
     btn2.whileHeld(new PositionBase());
+    btn1.whenPressed(new ResetSpeed());
   }
 
 
