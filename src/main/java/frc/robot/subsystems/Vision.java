@@ -14,6 +14,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+import java.lang.Math;
+
 public class Vision extends SubsystemBase {
 
   public static NetworkTableEntry tx;
@@ -40,6 +42,14 @@ public class Vision extends SubsystemBase {
   public static double xOutput;
   public static double yOutput;
 
+  public static double h1 = 35;
+  public static double h2 = 87;
+  public static double a1 = 6.3;
+  public static double a2;
+
+  public static double atest1 = Math.toRadians(a1);
+  public static double atest2;
+  public static double tan;
   public Vision() {
     
   }
@@ -57,6 +67,8 @@ public class Vision extends SubsystemBase {
     area = ta.getDouble(0.0);
     angle = ts.getDouble(0.0);
 
+    a2 = y;
+
     SmartDashboard.putNumber("test", 1);
 
     SmartDashboard.putNumber("LimelightX", x);
@@ -64,6 +76,12 @@ public class Vision extends SubsystemBase {
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("LimelightAngle", angle);
     SmartDashboard.putNumber("XOutput", getXOutput());
+
+    SmartDashboard.putNumber("a1", atest1);
+    SmartDashboard.putNumber("a2", atest2);
+    SmartDashboard.putNumber("tan", tan);
+
+    SmartDashboard.putNumber("Distance From Tower", getDistance());
   }
 
   public double getXOutput() {
@@ -78,5 +96,16 @@ public class Vision extends SubsystemBase {
     yError = 0.0 - currentY;
     yOutput = kP * yError + kI + kD;
     return yOutput;
+  }
+
+  public double getDistance() {
+    //double hypotenuse = (6.0033*(area * area)) - (65.33*area) + 264.82;
+    //double distance = Math.sqrt(((hypotenuse * hypotenuse) - (49 * 49)));
+    //return distance/12;
+    atest2 = Math.toRadians(a2);
+    tan = Math.tan(atest1+atest2);
+    
+    double distance = 54/tan;
+    return distance; 
   }
 }
