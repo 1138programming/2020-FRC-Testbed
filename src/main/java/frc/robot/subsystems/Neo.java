@@ -52,6 +52,7 @@ public class Neo extends SubsystemBase {
       BottomMotor.setInverted(false);
 
       TopMotor.setSensorPhase(true);
+      BottomMotor.setSensorPhase(true);
 
       //topController = new TakeBackHalf(KTopGain);
       //bottomController = new TakeBackHalf(KBottomGain);
@@ -59,11 +60,13 @@ public class Neo extends SubsystemBase {
       bottomController = new PIDController(0, 0, 0, 0.0001, 0.02);
 
       //SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
-      topController.setInputRange(-6000, 6000);
+      topController.setInputRange(-40000, 40000);
       topController.setOutputRange(-1, 1);
 
-      bottomController.setInputRange(-6000, 6000);
+      bottomController.setInputRange(-40000, 40000);
       bottomController.setOutputRange(-1, 1);
+      bottomController.configIntegral(IntegralType.DEFAULT, true);
+      bottomController.setIntegralZoneRange(500);
 
       // Initialize SmartDashboard fields to get numbers from
       SmartDashboard.putNumber("Flywheel Top Setpoint", 0.0);
@@ -85,8 +88,11 @@ public class Neo extends SubsystemBase {
     //SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
     SmartDashboard.putNumber("Flywheel Top Speed", getTopSpeed());
     SmartDashboard.putNumber("Fylwheel Top PWM", topSpeed);
+    SmartDashboard.putNumber("Flywheel Top Controller Setpoint", topController.getSetpoint());
     SmartDashboard.putNumber("Flywheel Bottom Speed", getBottomSpeed());
     SmartDashboard.putNumber("Fylwheel Bottom PWM", bottomSpeed);
+    SmartDashboard.putNumber("Flywheel Bottom Controller Setpoint", bottomController.getSetpoint());
+    SmartDashboard.putNumber("Flywheel Bottom Integral", bottomController.getErrorIntegral());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -129,9 +135,7 @@ public class Neo extends SubsystemBase {
   }
   
   public void calculate() {
-    //topSpeed = topController.calculate(getTopSpeed());
-    //bottomSpeed = bottomController.calculate(getBottomSpeed());
-    move(topSpeed, bottomSpeed);
+    move(topController.calculate(getTopSpeed()), bottomController.calculate(getBottomSpeed()));
   }
 
   public void reset() {
