@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.controller.TakeBackHalf;
+import frc.robot.controller.PIDController;
+import frc.robot.enums.IntegralType;
 
 public class Neo extends SubsystemBase {
 
@@ -32,8 +34,10 @@ public class Neo extends SubsystemBase {
     private TalonSRX TopMotor;
     private TalonSRX BottomMotor;
 
-    private TakeBackHalf topController;
-    private TakeBackHalf bottomController;
+    //private TakeBackHalf topController;
+    //private TakeBackHalf bottomController;
+    private PIDController topController;
+    private PIDController bottomController;
 
     private double topSpeed;
     private double bottomSpeed;
@@ -49,15 +53,29 @@ public class Neo extends SubsystemBase {
 
       TopMotor.setSensorPhase(true);
 
-      topController = new TakeBackHalf(KTopGain);
-      bottomController = new TakeBackHalf(KBottomGain);
+      //topController = new TakeBackHalf(KTopGain);
+      //bottomController = new TakeBackHalf(KBottomGain);
+      topController = new PIDController(0, 0, 0, 0.0001, 0.02);
+      bottomController = new PIDController(0, 0, 0, 0.0001, 0.02);
 
       //SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
-      topController.setInputRange(-80000, 80000);
+      topController.setInputRange(-6000, 6000);
       topController.setOutputRange(-1, 1);
 
-      bottomController.setInputRange(-80000, 80000);
+      bottomController.setInputRange(-6000, 6000);
       bottomController.setOutputRange(-1, 1);
+
+      // Initialize SmartDashboard fields to get numbers from
+      SmartDashboard.putNumber("Flywheel Top Setpoint", 0.0);
+      SmartDashboard.putNumber("Flywheel Bottom Setpoint", 0.0);
+      SmartDashboard.putNumber("Flywheel Top P", topController.getP());
+      SmartDashboard.putNumber("Flywheel Top I", topController.getI());
+      SmartDashboard.putNumber("Flywheel Top D", topController.getD());
+      SmartDashboard.putNumber("Flywheel Top F", topController.getF());
+      SmartDashboard.putNumber("Flywheel Bottom P", bottomController.getP());
+      SmartDashboard.putNumber("Flywheel Bottom I", bottomController.getI());
+      SmartDashboard.putNumber("Flywheel Bottom D", bottomController.getD());
+      SmartDashboard.putNumber("Flywheel Bottom F", bottomController.getF());
     }
 
   @Override
@@ -65,10 +83,10 @@ public class Neo extends SubsystemBase {
     // This method will be called once per scheduler 
 
     //SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
-    //SmartDashboard.putNumber("Flywheel top speed", getTopSpeed());
-    //SmartDashboard.putNumber("Flywheel top error", tbhController.getError());
-    //SmartDashboard.putNumber("Fylwheel top PWM", topSpeed);
-    //SmartDashboard.putNumber("Flywheel top h0", tbhController.getH0());
+    SmartDashboard.putNumber("Flywheel Top Speed", getTopSpeed());
+    SmartDashboard.putNumber("Fylwheel Top PWM", topSpeed);
+    SmartDashboard.putNumber("Flywheel Bottom Speed", getBottomSpeed());
+    SmartDashboard.putNumber("Fylwheel Bottom PWM", bottomSpeed);
   }
 
   /*public void neoMotorMove(double speed) {
@@ -81,6 +99,8 @@ public class Neo extends SubsystemBase {
   }*/
   
   public void move(double topSpeed, double bottomSpeed) {
+    this.topSpeed = topSpeed;
+    this.bottomSpeed = bottomSpeed;
     TopMotor.set(ControlMode.PercentOutput, topSpeed);
     BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
   }
@@ -109,8 +129,27 @@ public class Neo extends SubsystemBase {
   }
   
   public void calculate() {
-    topSpeed = topController.calculate(getTopSpeed());
-    bottomSpeed = bottomController.calculate(getBottomSpeed());
+    //topSpeed = topController.calculate(getTopSpeed());
+    //bottomSpeed = bottomController.calculate(getBottomSpeed());
     move(topSpeed, bottomSpeed);
+  }
+
+  public void reset() {
+    topController.reset();
+    bottomController.reset();
+  }
+
+  public void setTopConstants(double Kp, double Ki, double Kd, double Kf) {
+    topController.setP(Kp);
+    topController.setI(Ki);
+    topController.setD(Kd);
+    topController.setF(Kf);
+  }
+
+  public void setBottomConstants(double Kp, double Ki, double Kd, double Kf) {
+    bottomController.setP(Kp);
+    bottomController.setI(Ki);
+    bottomController.setD(Kd);
+    bottomController.setF(Kf);
   }
 }
