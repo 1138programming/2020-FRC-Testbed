@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.controller.TakeBackHalf;
 import frc.robot.controller.PIDController;
+import frc.robot.controller.LinearProfiler;
 import frc.robot.enums.IntegralType;
 
 public class Neo extends SubsystemBase {
@@ -29,69 +30,73 @@ public class Neo extends SubsystemBase {
     public static final double KTopGain = 0.000006;
     public static final double KBottomGain = 0.000006;
 
-    //private CANSparkMax TopMotor; 
-	  //private CANSparkMax BottomMotor; 
-    private TalonSRX TopMotor;
-    private TalonSRX BottomMotor;
+    //private CANSparkMax topMotor; 
+	  //private CANSparkMax bottomMotor; 
+    private TalonSRX topMotor;
+    private TalonSRX bottomMotor;
 
-    //private TakeBackHalf topController;
-    //private TakeBackHalf bottomController;
-    private PIDController topController;
-    private PIDController bottomController;
+    //private TakeBackHalf topProfiler;
+    //private TakeBackHalf bottomProfiler;
+    private LinearProfiler topProfiler;
+    private LinearProfiler bottomProfiler;
 
     private double topSpeed;
     private double bottomSpeed;
 
     public Neo () {
-		  // TopMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
-      // BottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
-      TopMotor = new TalonSRX(KTopTalon);
-      BottomMotor = new TalonSRX(KBottomTalon);
+		  // topMotor = new CANSparkMax(TopSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+      // bottomMotor = new CANSparkMax(BottomSparkMax, CANSparkMaxLowLevel.MotorType.kBrushless);
+      topMotor = new TalonSRX(KTopTalon);
+      bottomMotor = new TalonSRX(KBottomTalon);
 
-      TopMotor.setInverted(true);
-      BottomMotor.setInverted(false);
+      topMotor.setInverted(true);
+      bottomMotor.setInverted(false);
 
-      TopMotor.setSensorPhase(true);
-      BottomMotor.setSensorPhase(true);
+      topMotor.setSensorPhase(true);
+      bottomMotor.setSensorPhase(true);
 
-      //topController = new TakeBackHalf(KTopGain);
-      //bottomController = new TakeBackHalf(KBottomGain);
-      topController = new PIDController(0.00007, 0.0005, 0.000003, 0.000027, 0.02);
-      bottomController = new PIDController(0.00007, 0.0005, 0.000003, 0.000027, 0.02);
+      //topProfiler = new TakeBackHalf(KTopGain);
+      //bottomProfiler = new TakeBackHalf(KBottomGain);
+      topProfiler = new LinearProfiler(20000, 10000, 0, 0, 0, 0.000027, 0, 0.2);
+      bottomProfiler = new LinearProfiler(20000, 10000, 0, 0, 0, 0.000027, 0, 0.2);
 
       //SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
-      topController.setInputRange(-40000, 40000);
-      topController.setOutputRange(-1, 1);
+      topProfiler.setOutputRange(-1, 1);
+      topProfiler.setTolerance(50, 0);
 
-      bottomController.setInputRange(-40000, 40000);
-      bottomController.setOutputRange(-1, 1);
-      bottomController.configIntegral(IntegralType.DEFAULT, true);
-      bottomController.setIntegralZoneRange(500);
+      bottomProfiler.setOutputRange(-1, 1);
+      bottomProfiler.setTolerance(50, 0);
 
       // Initialize SmartDashboard fields to get numbers from
-      SmartDashboard.putNumber("Flywheel Top Setpoint", 0.0);
-      SmartDashboard.putNumber("Flywheel Bottom Setpoint", 0.0);
-      SmartDashboard.putNumber("Flywheel Top P", topController.getP());
-      SmartDashboard.putNumber("Flywheel Top I", topController.getI());
-      SmartDashboard.putNumber("Flywheel Top D", topController.getD());
-      SmartDashboard.putNumber("Flywheel Top F", topController.getF());
-      SmartDashboard.putNumber("Flywheel Bottom P", bottomController.getP());
-      SmartDashboard.putNumber("Flywheel Bottom I", bottomController.getI());
-      SmartDashboard.putNumber("Flywheel Bottom D", bottomController.getD());
-      SmartDashboard.putNumber("Flywheel Bottom F", bottomController.getF());
+      SmartDashboard.putNumber("Flywheel Top Target", 0.0);
+      SmartDashboard.putNumber("Flywheel Bottom Target", 0.0);
+      SmartDashboard.putNumber("Flywheel Top P", topProfiler.getP());
+      SmartDashboard.putNumber("Flywheel Top I", topProfiler.getI());
+      SmartDashboard.putNumber("Flywheel Top D", topProfiler.getD());
+      SmartDashboard.putNumber("Flywheel Top F V", topProfiler.getVelocityFeedforward());
+      SmartDashboard.putNumber("Flywheel Top F A", topProfiler.getAccelFeedforward());
+      SmartDashboard.putNumber("Flywheel Bottom P", bottomProfiler.getP());
+      SmartDashboard.putNumber("Flywheel Bottom I", bottomProfiler.getI());
+      SmartDashboard.putNumber("Flywheel Bottom D", bottomProfiler.getD());
+      SmartDashboard.putNumber("Flywheel Bottom F V", bottomProfiler.getVelocityFeedforward());
+      SmartDashboard.putNumber("Flywheel Bottom F A", bottomProfiler.getAccelFeedforward());
     }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler 
 
-    //SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getSetpoint());
-    SmartDashboard.putNumber("Flywheel Top Speed", getTopSpeed());
+    //SmartDashboard.putNumber("Flywheel top setpoint", tbhController.getTarget());
+    SmartDashboard.putNumber("Flywheel Top Target Pos", topProfiler.getTarget());
+    SmartDashboard.putNumber("Flywheel Top Pos", getTopPos());
+    SmartDashboard.putNumber("Flywheel Top Target Vel", topProfiler.getTargetVel());
+    SmartDashboard.putNumber("Flywheel Top Vel", getTopSpeed());
     SmartDashboard.putNumber("Fylwheel Top PWM", topSpeed);
-    SmartDashboard.putNumber("Flywheel Top Controller Setpoint", topController.getSetpoint());
-    SmartDashboard.putNumber("Flywheel Bottom Speed", getBottomSpeed());
+    SmartDashboard.putNumber("Flywheel Bottom Target Pos", bottomProfiler.getTarget());
+    SmartDashboard.putNumber("Flywheel Bottom Pos", getBottomPos());
+    SmartDashboard.putNumber("Flywheel Bottom Target Vel", bottomProfiler.getTargetVel());
+    SmartDashboard.putNumber("Flywheel Bottom Vel", getBottomSpeed());
     SmartDashboard.putNumber("Fylwheel Bottom PWM", bottomSpeed);
-    SmartDashboard.putNumber("Flywheel Bottom Controller Setpoint", bottomController.getSetpoint());
   }
 
   /*public void neoMotorMove(double speed) {
@@ -106,53 +111,72 @@ public class Neo extends SubsystemBase {
   public void move(double topSpeed, double bottomSpeed) {
     this.topSpeed = topSpeed;
     this.bottomSpeed = bottomSpeed;
-    TopMotor.set(ControlMode.PercentOutput, topSpeed);
-    BottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
+    topMotor.set(ControlMode.PercentOutput, topSpeed);
+    bottomMotor.set(ControlMode.PercentOutput, bottomSpeed);
+  }
+
+  public double getTopPos() {
+    return topMotor.getSelectedSensorPosition();
+  }
+
+  public double getBottomPos() {
+    return bottomMotor.getSelectedSensorPosition();
   }
 
   public double getTopSpeed() {
-    return TopMotor.getSelectedSensorVelocity();
+    return topMotor.getSelectedSensorVelocity();
   }
 
   public double getBottomSpeed() {
-    return BottomMotor.getSelectedSensorVelocity();
+    return bottomMotor.getSelectedSensorVelocity();
   }
 
-  public double getTopSetpoint() {
-    //return tbhController.getSetpoint();
-    return topController.getSetpoint();
+  public double getTopTarget() {
+    //return tbhController.getTarget();
+    return topProfiler.getTarget();
   }
 
-  public double getBottomSetpoint() {
-    //return tbhController.getSetpoint();
-    return topController.getSetpoint();
+  public double getBottomTarget() {
+    //return tbhController.getTarget();
+    return topProfiler.getTarget();
   }
 
-  public void setSetpoint(double topSetpoint, double bottomSetpoint) {
-    topController.setSetpoint(topSetpoint);
-    bottomController.setSetpoint(bottomSetpoint);
+  public void setTargets(double topTarget, double bottomTarget) {
+    topProfiler.setTarget(topTarget);
+    bottomProfiler.setTarget(bottomTarget);
   }
   
+  public void setTargetsRelative(double topTarget, double bottomTarget) {
+    topProfiler.setTargetRelative(topTarget);
+    bottomProfiler.setTargetRelative(bottomTarget);
+  }
+
   public void calculate() {
-    move(topController.calculate(getTopSpeed()), bottomController.calculate(getBottomSpeed()));
+    move(topProfiler.calculate(getTopPos()), bottomProfiler.calculate(getBottomPos()));
   }
 
-  public void reset() {
-    topController.reset();
-    bottomController.reset();
+  public boolean atTargets() {
+    return topProfiler.atTarget() && bottomProfiler.atTarget();
   }
 
-  public void setTopConstants(double Kp, double Ki, double Kd, double Kf) {
-    topController.setP(Kp);
-    topController.setI(Ki);
-    topController.setD(Kd);
-    topController.setF(Kf);
+  public void init() {
+    topProfiler.init(getTopPos());
+    bottomProfiler.init(getTopPos());
   }
 
-  public void setBottomConstants(double Kp, double Ki, double Kd, double Kf) {
-    bottomController.setP(Kp);
-    bottomController.setI(Ki);
-    bottomController.setD(Kd);
-    bottomController.setF(Kf);
+  public void setTopConstants(double kP, double kI, double kD, double kFv, double kFa) {
+    topProfiler.setP(kP);
+    topProfiler.setI(kI);
+    topProfiler.setD(kD);
+    topProfiler.setVelocityFeedforward(kFv);
+    topProfiler.setAccelFeedforward(kFa);
+  }
+
+  public void setBottomConstants(double kP, double kI, double kD, double kFv, double kFa) {
+    bottomProfiler.setP(kP);
+    bottomProfiler.setI(kI);
+    bottomProfiler.setD(kD);
+    bottomProfiler.setVelocityFeedforward(kFv);
+    bottomProfiler.setAccelFeedforward(kFa);
   }
 }

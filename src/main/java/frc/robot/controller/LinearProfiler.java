@@ -1,7 +1,7 @@
 package frc.robot.controller;
 
-//import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.controller.PIDController;
+import frc.robot.enums.IntegralType;
 
 public class LinearProfiler {
     private PIDController posPID; // Internal position PID
@@ -181,6 +181,22 @@ public class LinearProfiler {
         this.kFa = kFa;
     }
 
+    public void setInputRange(double minInput, double maxInput) {
+        posPID.setInputRange(minInput, maxInput);
+    }
+
+    public void setOutputRange(double minOutput, double maxOutput) {
+        posPID.setOutputRange(minOutput, maxOutput);
+    }
+
+    public void configIntegral(IntegralType integralType, boolean integralZone) {
+        posPID.configIntegral(integralType, integralZone);
+    }
+
+    public void setIntegralZoneRange(double integralZoneRange) {
+        posPID.setIntegralZoneRange(integralZoneRange);
+    }
+
     /**
      * Sets the position PID's position and velocity tolerances
      * 
@@ -211,11 +227,33 @@ public class LinearProfiler {
         this.targetPos = measurement + targetPos;
     }
 
+    // Getters
+
     /**
      * Gets the profile's target position
      */
     public double getTarget() {
         return targetPos;
+    }
+
+    public double getP() {
+        return posPID.getP();
+    }
+
+    public double getI() {
+        return posPID.getI();
+    }
+
+    public double getD() {
+        return posPID.getD();
+    }
+
+    public double getVelocityFeedforward() {
+        return kFv;
+    }
+
+    public double getAccelFeedforward() {
+        return kFv;
     }
 
     // PID Functions
@@ -380,12 +418,5 @@ public class LinearProfiler {
      */
     public double getAccel() {
         return accel;
-    }
-
-    /**
-     * Gets the PID controller
-     */
-    public PIDController getController() {
-        return posPID;
     }
 };
