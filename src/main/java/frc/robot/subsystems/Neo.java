@@ -56,8 +56,8 @@ public class Neo extends SubsystemBase {
 
       //topController = new TakeBackHalf(KTopGain);
       //bottomController = new TakeBackHalf(KBottomGain);
-      topController = new PIDController(0, 0, 0, 0.0001, 0.02);
-      bottomController = new PIDController(0, 0, 0, 0.0001, 0.02);
+      topController = new PIDController(0.00007, 0.0005, 0.000003, 0.000027, 0.02);
+      bottomController = new PIDController(0.00007, 0.0005, 0.000003, 0.000027, 0.02);
 
       //SmartDashboard.putNumber("Take Back Half gain", 0.000006); // ~0.000006 is best
       topController.setInputRange(-40000, 40000);
@@ -92,7 +92,6 @@ public class Neo extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel Bottom Speed", getBottomSpeed());
     SmartDashboard.putNumber("Fylwheel Bottom PWM", bottomSpeed);
     SmartDashboard.putNumber("Flywheel Bottom Controller Setpoint", bottomController.getSetpoint());
-    SmartDashboard.putNumber("Flywheel Bottom Integral", bottomController.getErrorIntegral());
   }
 
   /*public void neoMotorMove(double speed) {
