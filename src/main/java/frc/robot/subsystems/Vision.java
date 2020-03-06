@@ -33,7 +33,8 @@ public class Vision extends SubsystemBase {
 
   public static final double kP = 0.1; 
   public static final double kI = 0.05;
-  public static final double kD = 0.2; 
+  public static final double kD = 0.2;
+
   
   public static double xError; 
   public static double yError;
@@ -51,6 +52,7 @@ public class Vision extends SubsystemBase {
   public static double atest2;
   public static double tan;
   public static double lastDistance = 0;
+
   public Vision() {
     
   }
