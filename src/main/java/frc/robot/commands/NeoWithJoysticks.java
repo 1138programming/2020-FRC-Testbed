@@ -32,8 +32,8 @@ public class NeoWithJoysticks extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    SmartDashboard.putNumber("Flywheel top", 0.0);
-    SmartDashboard.putNumber("Flywheel bottom", 0.0);
+    //SmartDashboard.putNumber("Flywheel top", 0.0);
+    //SmartDashboard.putNumber("Flywheel bottom", 0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,7 +44,7 @@ public class NeoWithJoysticks extends CommandBase {
     //RobotContainer.neo.move(speed);
     //RobotContainer.neo.move(0.5);
     RobotContainer.neo.move(SmartDashboard.getNumber("Flywheel top", 0.0), SmartDashboard.getNumber("Flywheel bottom", 0.0));
-    SmartDashboard.putNumber("Flywheel", speed);
+    //SmartDashboard.putNumber("Flywheel", speed);
   
   }
 

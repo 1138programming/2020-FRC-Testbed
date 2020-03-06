@@ -8,27 +8,24 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Base;
-import frc.robot.subsystems.Vision;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class PositionBase extends CommandBase {
+public class ArcadeDriveWithJoysticks extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   /**
-   * Creates a new PositionBase.
+   * Creates a new DriveWithJoysticks.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public PositionBase() {
+  public ArcadeDriveWithJoysticks() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.base);
-    addRequirements(RobotContainer.vision);
   }
 
   // Called when the command is initially scheduled.
@@ -39,18 +36,7 @@ public class PositionBase extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double output = RobotContainer.vision.getXOutput(); 
-    if(-0.1 < output && 0.1 > output) {
-      RobotContainer.base.tankDrive(0, 0);
-    } 
-    else if (output > 0.1) {
-      RobotContainer.base.tankDrive(-0.20, 0.20);
-    } 
-    else if (output < -0.1) {
-      RobotContainer.base.tankDrive(0.20, -0.20);
-    } 
-
-    //SmartDashboard.putNumber("XOutputInCommand", output);
+    RobotContainer.base.tankDrive(-(Robot.oi.getLeftAxis() - Robot.oi.getArcadeRightAxis()), -(Robot.oi.getLeftAxis() + Robot.oi.getArcadeRightAxis()));
   }
 
   // Called once the command ends or is interrupted.
@@ -65,6 +51,6 @@ public class PositionBase extends CommandBase {
   }
 
   public String getName() {
-    return "Position base";
+    return "Drive with joysticks";
   }
 }

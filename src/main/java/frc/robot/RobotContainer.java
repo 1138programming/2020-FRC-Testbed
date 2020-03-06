@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveWithJoysticks;
+import frc.robot.commands.ArcadeDriveWithJoysticks;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.PositionBase;
 import frc.robot.commands.NeoWithJoysticks; 
@@ -90,10 +90,10 @@ public class RobotContainer {
   public RobotContainer() {
     //Default Commands?
     /*base.setDefaultCommand(new RunCommand(() -> {
-      SmartDashboard.putBoolean("");
+      //SmartDashboard.putBoolean("");
       return;
     }));*/
-    base.setDefaultCommand(new DriveWithJoysticks());
+    base.setDefaultCommand(new ArcadeDriveWithJoysticks());
     falcon.setDefaultCommand(new FalconStop());
     //neo.setDefaultCommand(new NeoStop());
     neo.setDefaultCommand(new NeoWithJoysticks());
@@ -149,7 +149,7 @@ public class RobotContainer {
 
   public double getRightAxis() {
     double Y = logitech.getRawAxis(KRightYAxis);
-    SmartDashboard.putNumber("Right axis", Y);
+    //SmartDashboard.putNumber("Right axis", Y);
     if (Y > KDeadZone || Y < -KDeadZone) {
       return -Y;
     } else {
@@ -159,9 +159,29 @@ public class RobotContainer {
 
   public double getLeftAxis() {
     double Y = logitech.getRawAxis(KLeftYAxis);
-    SmartDashboard.putNumber("Left axis", Y);
+    //SmartDashboard.putNumber("Left axis", Y);
     if (Y > KDeadZone || Y < -KDeadZone) {
       return -Y;
+    } else {
+      return 0; 
+    }
+  }
+
+  public double getArcadeRightAxis() {
+    double X = logitech.getRawAxis(2);
+    //SmartDashboard.putNumber("Right axis", Y);
+    if (X > KDeadZone || X < -KDeadZone) {
+      return -X;
+    } else {
+      return 0; 
+    }
+  }
+
+  public double getArcadeLeftAxis() {
+    double X = logitech.getRawAxis(0);
+    //SmartDashboard.putNumber("Left axis", Y);
+    if (X > KDeadZone || X < -KDeadZone) {
+      return -X;
     } else {
       return 0; 
     }

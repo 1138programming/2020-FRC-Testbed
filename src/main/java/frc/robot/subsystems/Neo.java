@@ -19,8 +19,8 @@ public class Neo extends SubsystemBase {
 
     //public static final int KTopSparkMax = 11;
     //public static final int KBottomSparkMax = 10;
-    public static final int KTopTalon = 12;
-    public static final int KBottomTalon = 8;
+    public static final int KTopTalon = 15;
+    public static final int KBottomTalon = 14;
 
     //private CANSparkMax TopMotor; 
 	  //private CANSparkMax BottomMotor; 

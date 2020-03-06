@@ -42,14 +42,15 @@ public class Vision extends SubsystemBase {
   public static double xOutput;
   public static double yOutput;
 
-  public static double h1 = 35;
+  public static double h1 = 31;
   public static double h2 = 87;
-  public static double a1 = 6.3;
+  public static double a1 = 8.877568714;
   public static double a2;
 
   public static double atest1 = Math.toRadians(a1);
   public static double atest2;
   public static double tan;
+  public static double lastDistance = 0;
   public Vision() {
     
   }
@@ -69,19 +70,19 @@ public class Vision extends SubsystemBase {
 
     a2 = y;
 
-    SmartDashboard.putNumber("test", 1);
+    //SmartDashboard.putNumber("test", 1);
 
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("LimelightAngle", angle);
-    SmartDashboard.putNumber("XOutput", getXOutput());
+    //SmartDashboard.putNumber("LimelightX", x);
+    //SmartDashboard.putNumber("LimelightY", y);
+    //SmartDashboard.putNumber("LimelightArea", area);
+    //SmartDashboard.putNumber("LimelightAngle", angle);
+    //SmartDashboard.putNumber("XOutput", getXOutput());
 
-    SmartDashboard.putNumber("a1", atest1);
-    SmartDashboard.putNumber("a2", atest2);
-    SmartDashboard.putNumber("tan", tan);
+    //SmartDashboard.putNumber("a1", atest1);
+    //SmartDashboard.putNumber("a2", atest2);
+    //SmartDashboard.putNumber("tan", tan);
 
-    SmartDashboard.putNumber("Distance From Tower", getDistance());
+    //SmartDashboard.putNumber("Distance From Tower", getDistance());
   }
 
   public double getXOutput() {
@@ -102,10 +103,16 @@ public class Vision extends SubsystemBase {
     //double hypotenuse = (6.0033*(area * area)) - (65.33*area) + 264.82;
     //double distance = Math.sqrt(((hypotenuse * hypotenuse) - (49 * 49)));
     //return distance/12;
-    atest2 = Math.toRadians(a2);
-    tan = Math.tan(atest1+atest2);
+    if (area > 0.1) {
+      atest2 = Math.toRadians(a2);
+      tan = Math.tan(atest1+atest2);
     
-    double distance = 54/tan;
-    return distance; 
+      double distance = 54/tan;
+      lastDistance = distance;
+
+      return distance; 
+    } else {
+      return lastDistance;
+    }
   }
 }
