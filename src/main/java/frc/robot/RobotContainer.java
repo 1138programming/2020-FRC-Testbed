@@ -9,16 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.DriveWithJoysticks;
-import frc.robot.subsystems.Vision;
 import frc.robot.commands.NeoWithJoysticks; 
-import frc.robot.commands.FalconStop;
 import frc.robot.commands.NeoStop;
-import frc.robot.subsystems.Base;
-import frc.robot.subsystems.Falcon;
 import frc.robot.subsystems.Neo;
 import frc.robot.Robot;
-import frc.robot.commands.TestCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,9 +38,7 @@ public class RobotContainer {
   // You create one by telling it which joystick it's on and which button
   // number it is.
   //Create Robot
-  public static Base base = new Base();
-  public static Vision vision = new Vision(); 
-  public static Falcon falcon = new Falcon();
+
   public static Neo neo = new Neo();
 
   //Controller Constants 
@@ -91,8 +83,6 @@ public class RobotContainer {
       SmartDashboard.putBoolean("");
       return;
     }));*/
-    base.setDefaultCommand(new DriveWithJoysticks());
-    falcon.setDefaultCommand(new FalconStop());
     //neo.setDefaultCommand(new NeoStop());
     neo.setDefaultCommand(new NeoWithJoysticks());
     //Controllers 
@@ -172,8 +162,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
-    btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
+    // btn1.whileHeld(new RunCommand(() -> falcon.move(0.5)));
+    // btn2.whileHeld(new RunCommand(() -> falcon.move(-0.5)));
     //btn3.whileHeld(new RunCommand(() -> neo.move(0.7, 0.7)));
     //btn4.whileHeld(new RunCommand(() -> neo.move(0.8, 0.8)));
     //btn5.whileHeld(new RunCommand(() -> neo.move(0.9, 0.9)));
